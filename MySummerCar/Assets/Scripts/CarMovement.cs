@@ -12,6 +12,8 @@ public class CarMovement : MonoBehaviour
     [SerializeField] private WheelCollider _blWheel, _brWheel;
     private Rigidbody _rigidbody;
 
+    public float Speed { get; private set; }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -19,6 +21,8 @@ public class CarMovement : MonoBehaviour
 
     private void Update()
     {
+        Speed = _rigidbody.linearVelocity.magnitude;
+        
         float motor = _motorTorque * Input.GetAxis("Vertical");
         float steering = _maxSteeringAngle * Input.GetAxis("Horizontal");
         
@@ -30,11 +34,15 @@ public class CarMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
         {
+            _flWheel.brakeTorque = _breakForce;
+            _frWheel.brakeTorque = _breakForce;
             _blWheel.brakeTorque = _breakForce;
             _brWheel.brakeTorque = _breakForce;
         }
         else
         {
+            _flWheel.brakeTorque = 0f;
+            _frWheel.brakeTorque = 0f;
             _blWheel.brakeTorque = 0f;
             _brWheel.brakeTorque = 0f;
         }
