@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class CarMovement : MonoBehaviour
 {
-    [SerializeField] private float _motorTorque = 500f;
-    [SerializeField] private float _breakForce = 300f;
+    [SerializeField] private float _motorTorque = 3000f;
+    [SerializeField] private float _breakForce = 50000f;
     [SerializeField] private float _maxSteeringAngle = 45f;
+    [SerializeField] private Transform _centerOfMass;
     [SerializeField] private Transform _flTransform, _frTransform, _blTransform, _brTransform;
 
     [SerializeField] private WheelCollider _flWheel, _frWheel;
@@ -17,6 +18,7 @@ public class CarMovement : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody.centerOfMass = _centerOfMass.localPosition;
     }
 
     private void Update()
@@ -34,8 +36,6 @@ public class CarMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
         {
-            _flWheel.brakeTorque = _breakForce;
-            _frWheel.brakeTorque = _breakForce;
             _blWheel.brakeTorque = _breakForce;
             _brWheel.brakeTorque = _breakForce;
         }
